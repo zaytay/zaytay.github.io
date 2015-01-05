@@ -1,0 +1,373 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Hexo  GitHub 搭建个人blog | tong</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="tong">
+    
+    <meta name="description" content="1.GitHub Pages 准备:
+
+创建一个GitHub pages new 一个 repsitory，注意Repository name的名称为：github账户名.github.io 创建完之后大概十分钟左右才可以访问。
+
+
+2.Hexo搭建
+
+下载 nodejs   
+1.安装Hexo
+1">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/2cat.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/2cat.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="tong">tong</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/06/10/hexo使用/" title="Hexo  GitHub 搭建个人blog" itemprop="url">Hexo  GitHub 搭建个人blog</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="tong">tong</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2014-06-10T05:45:22.000Z" itemprop="datePublished">Jun 10 2014</time>
+    Updated:<time datetime="2015-01-05T06:41:57.000Z" itemprop="dateModified">Jan 5 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+		</div>
+		
+		<blockquote>
+<p><strong>1.GitHub Pages 准备</strong>:</p>
+</blockquote>
+<p>创建一个GitHub pages<br> new 一个 repsitory，注意Repository name的名称为：github账户名.github.io<br> 创建完之后大概十分钟左右才可以访问。</p>
+<hr>
+<blockquote>
+<p><strong>2.Hexo搭建</strong></p>
+</blockquote>
+<p>下载 <a href="http://nodejs.org/download/" target="_blank" rel="external">nodejs</a>   </p>
+<p>1.安装Hexo</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo -g</div></pre></td></tr></table></figure>
+
+<p>2.创建blog文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ hexo init blog</div><div class="line">$ <span class="built_in">cd</span> blog</div><div class="line">$ npm install</div></pre></td></tr></table></figure>
+
+<p>3.发布一篇日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"Hello Hexo"</span></div></pre></td></tr></table></figure>
+
+<p>4.本地生成</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+
+<p>5.本地启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+
+<p>访问localhost：4000 预览本地页面</p>
+<hr>
+<blockquote>
+<p><strong>3.将本地blog上传到GitHub</strong></p>
+</blockquote>
+<p>修改  blog 文件下 _config.yml文件中的deployment设置<br>配置repostiory远端地址如下：</p>
+<p>deploy:<br>     type: github<br>     repository: <a href="https://github.com/zaytay/zaytay.github.io.git" target="_blank" rel="external">https://github.com/zaytay/zaytay.github.io.git</a><br>     branch: master</p>
+<p>执行配置命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo d</div></pre></td></tr></table></figure>
+
+
+<hr>
+<blockquote>
+<p><strong>4.可能碰到的错误</strong></p>
+</blockquote>
+<p>1.打开首页出现如下错误：</p>
+<pre><code>&lt;<span class="variable">%-</span> partial(<span class="string">'_partial/head'</span>) <span class="variable">%&gt;</span>                &lt;<span class="variable">%-</span> partial(<span class="string">'_partial/header'</span>) <span class="variable">%&gt;</span>                &lt;<span class="variable">%-</span> body <span class="variable">%&gt;</span>                &lt;% <span class="keyword">if</span> (theme.sidebar &amp;&amp; theme.sidebar !== <span class="string">'bottom'</span>){ <span class="variable">%&gt;</span> &lt;<span class="variable">%-</span> partial(<span class="string">'_partial/sidebar'</span>) <span class="variable">%&gt;</span> &lt;% } <span class="variable">%&gt;</span>                &lt;<span class="variable">%-</span> partial(<span class="string">'_partial/footer'</span>) <span class="variable">%&gt;</span>                &lt;<span class="variable">%-</span> partial(<span class="string">'_partial/mobile-nav'</span>) <span class="variable">%&gt;</span> &lt;<span class="variable">%-</span> partial(<span class="string">'_partial/after-footer'</span>) <span class="variable">%&gt;</span>
+</code></pre><p>原因：hexo无法解析模板<br>解决：执行如下命令</p>
+<pre><code>npm <span class="operator"><span class="keyword">install</span> hexo-renderer-ejs <span class="comment">--save</span>
+
+npm <span class="keyword">install</span> hexo-renderer-stylus <span class="comment">--save</span>
+
+npm <span class="keyword">install</span> hexo-renderer-marked <span class="comment">--save</span></span>
+</code></pre><p>2.执行 hexo d 时 报错： error spawn  enoent。原因：在windows系统中，没有将git加入到系统环境变量中，将git安装目录添加到path系统环境变量中即可解决</p>
+<p> 访问GitHub Pages 个人blog。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/开发技术/">开发技术</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/开发工具/">开发工具</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2014/06/10/hexo使用/" data-title="Hexo  GitHub 搭建个人blog | tong" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/06/10/hexo使用/" title="Hexo  GitHub 搭建个人blog">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  Hexo  GitHub 搭建个人blog</span>
+</a>
+</div>
+
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/Solr/" title="Solr">Solr<sup>2</sup></a></li>
+		
+			<li><a href="/categories/maven/" title="maven">maven<sup>1</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>7</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+		
+			<li><a href="/tags/solr/" title="solr">solr<sup>2</sup></a></li>
+		
+			<li><a href="/tags/开发技术/" title="开发技术">开发技术<sup>7</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/1329252844" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/zaytay" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://yoursite.com" target="_blank" title="tong">tong</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>

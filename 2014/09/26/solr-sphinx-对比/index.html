@@ -1,0 +1,350 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>solr sphinx 对比 | tong</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="tong">
+    
+    <meta name="description" content="Solr 与 Sphinx 对比
+Lucene Solr Sphinx 三者概念上分析
+
+首先是Solr 与 Lucene 的关系:Lucene是一个基于Java的全文搜索引擎。 一套信息检索的工具包。 Solr 是一个基于lucene的搜索引擎系统，可以理解为一个搜索服务器。基于lucene的搜索">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/2cat.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/2cat.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="tong">tong</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/09/26/solr-sphinx-对比/" title="solr sphinx 对比" itemprop="url">solr sphinx 对比</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="tong">tong</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2014-09-26T10:16:50.000Z" itemprop="datePublished">Sep 26 2014</time>
+    Updated:<time datetime="2014-09-25T19:52:08.000Z" itemprop="dateModified">Sep 26 2014</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Solr_与_Sphinx_对比"><span class="toc-number">1.</span> <span class="toc-text">Solr 与 Sphinx 对比</span></a></li></ol>
+		</div>
+		
+		<h1 id="Solr_与_Sphinx_对比">Solr 与 Sphinx 对比</h1>
+<p><strong>Lucene Solr Sphinx 三者概念上分析</strong></p>
+<blockquote>
+<p>首先是Solr 与 Lucene 的关系:<br>Lucene是一个基于Java的全文搜索引擎。 一套信息检索的工具包。 Solr 是一个基于lucene的搜索引擎系统，可以理解为一个搜索服务器。基于lucene的搜索引擎系统还有ElasticSearch、IndexTan、Katta等等。</p>
+<p>Sphinx 相对于Lucene来进行定义的比较，它是一个C++的全文检索引擎。</p>
+</blockquote>
+<p><strong>Lucene 与Solr  对比</strong></p>
+<blockquote>
+<p>首先Solr是基于Lucene做的，Lucene是一套信息检索工具包，但并不包含搜索引擎系统，它包含了索引结构、读写索引工具、相关性工具、排序等功能，因此在使用Lucene时仍需要关注搜索引擎系统，例如数据获取、解析、分词等方面的东西。它只是一个工具包，不支持分布式，所以分布式的搜索服务，都需要自己去实现。<br>Solr的目标是打造一款企业级的搜索引擎系统，因此它更接近于我们认识到的搜索引擎系统，它是一个搜索引擎服务，通过各种API可以让你的应用使用搜索服务，而不需要将搜索逻辑耦合在应用中。而且Solr可以根据配置文件定义数据解析的方式，更像是一个搜索框架，它也支持主从、热换库等操作。还添加了飘红、facet等搜索引擎常见功能的支持。<br>因此Lucene 需要投入的精力大， Solr是在Lucene外层加上了一层优化。<br>Lucene在使用上更加灵活，但是你需要自己处理搜素引擎系统架构，以及其他附加功能的实现。而Solr帮你做了更多，但是是一个处于高层的框架，Lucene很多新特性不能及时向上透传，所以有时候可能发现需要一个功能，Lucene是支持的，但是Solr上并没有相关的接口。<br>从功能上讲，Solr会自带很多功能，而lucene需要自己动手去实现。但对于深度定制的功能需求，lucene修改的灵活性更大。<br>    从性能上讲，因为Solr是基于Lucene的两者差别不大。因为Lucene需要多方面的自定义实现，所以性能的差别一般是由Lucene自定义开发的细节来决定</p>
+</blockquote>
+<p><strong>Solr 与 Sphinx 对比</strong></p>
+<blockquote>
+<p>应用环境：<br>    首先Solr是由Java编写的，Sphinx是由C++编写的。所以对于Java 应用，Solr可以很容易嵌入到应用中。Sphinx也提供有多种语言的接口。<br>Sphinx的设计初衷，就是与SQL数据库可以有效结合。相对于Solr，Sphinx最大的特点有两个： 1，支持直接以SQL数据库作为数据源<br>2，支持以SQL语法进行查询    Sphinx 跟 RDBMS （特别是MYSQL） 绑定的特别紧密。 而Solr 可以和 Hadoop<br>集成，成为分布式系统。 也可以 和 Nutch集成，成为一个功能完备的搜索引擎，以及网络爬虫(crawler) 。</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>索引： Solr是基于Lucene的索引结构，所以Solr和Sphinx的索引结构并不兼容。<br>Solr支持近实时更新索引，Sphinx不支持，Sphinx只能通过定时任务进行索引更新。  在Sphinx索引中，所有的 Doment<br>id 必须是 unique , unsigned, non-zero<br>整数。Solr的索引结构与lucene兼容，很多索引操作甚至不需要unique key。 而且unique key<br>可以是整数，也可以是字符串。 因为Sphinx直接跟数据库对话，所以建立索引速度非常快，除非SQL语句非常复杂或者某个列没有索引。<br>搜索相关功能点： Solr 可以索引像WORD， PDF这样的形式，Sphinx并不支持。 Solr 自带有拼写检查器，Sphinx不支持。<br>Solr 默认有facet的支持，Shphinx中需要做一些额外的工作才可以支持。   Solr 支持field collapsing<br>来避免相似搜索结果的重复性。 Sphinx不支持该功能。 Solr支持多核（multicore）形式，Sphinx未发现该功能。 Solr<br>的SolrCloud 提供  分片(sharding) 、备份（replication）这些功能。Sphinx 并未发现相关功能。</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>性能效率： 参考 <a href="http://blog.csdn.net/wgw335363240/article/details/37931941" target="_blank" rel="external">http://blog.csdn.net/wgw335363240/article/details/37931941</a><br>的分析<br>1.索引效率<br>     Sphinx：10-15MB/秒， 实测最高可对100GB的文本建立索引，单一索引可包含1亿条记录<br>    Solr:10MB/秒，亿条数据,20G索引，新浪目前也采用lucene检索<br>2.搜索性能<br>    Sphinx：高性能搜索，在2-4GB的文本数据上，平均每次检索响应时间小于0.1秒;在1.2G文本，100万条文档上进行搜索，支持高达每秒150~250次查询；<br>    Solr:高性能搜索，8G的索引文件，检索响应时间为150ms。高峰支持500并发/秒</p>
+<p>索引、搜索的具体性能有待进一步实验平台测试。</p>
+</blockquote>
+<p>参考文档：<br><a href="http://db-engines.com/en/system/Solr%3BSphinx" target="_blank" rel="external">http://db-engines.com/en/system/Solr%3BSphinx</a><br><a href="http://www.ftopia.com/2011/03/29/switching-to-solr/" target="_blank" rel="external">http://www.ftopia.com/2011/03/29/switching-to-solr/</a><br><a href="http://www.wikivs.com/wiki/Lucene_vs_Sphinx" target="_blank" rel="external">http://www.wikivs.com/wiki/Lucene_vs_Sphinx</a><br><a href="http://beerpla.net/2009/09/03/comparison-between-solr-and-sphinx-search-servers-solr-vs-sphinx-fight/" target="_blank" rel="external">http://beerpla.net/2009/09/03/comparison-between-solr-and-sphinx-search-servers-solr-vs-sphinx-fight/</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/solr/">solr</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Solr/">Solr</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2014/09/26/solr-sphinx-对比/" data-title="solr sphinx 对比 | tong" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/01/04/mvn-tomcat-plugin-使用/" title="mvn tomcat-plugin 使用">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  mvn tomcat-plugin 使用</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/06/16/solrset/"  title="solr,resin 配置">
+ <strong>NEXT:</strong><br/> 
+ <span>solr,resin 配置
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Solr_与_Sphinx_对比"><span class="toc-number">1.</span> <span class="toc-text">Solr 与 Sphinx 对比</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/Solr/" title="Solr">Solr<sup>2</sup></a></li>
+		
+			<li><a href="/categories/maven/" title="maven">maven<sup>1</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>7</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+		
+			<li><a href="/tags/solr/" title="solr">solr<sup>2</sup></a></li>
+		
+			<li><a href="/tags/开发技术/" title="开发技术">开发技术<sup>7</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/1329252844" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/zaytay" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://yoursite.com" target="_blank" title="tong">tong</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>

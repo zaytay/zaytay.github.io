@@ -1,0 +1,431 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>solr,resin 配置 | tong</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="tong">
+    
+    <meta name="description" content="1.jdk
+  wget jdk问题：  在http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html 页面下找到jdk下载地址后直接执行  
+wget  http://download.or">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/2cat.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/2cat.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="tong">tong</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/06/16/solrset/" title="solr,resin 配置" itemprop="url">solr,resin 配置</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="tong">tong</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2014-06-16T06:06:27.000Z" itemprop="datePublished">Jun 16 2014</time>
+    Updated:<time datetime="2014-06-15T19:57:06.000Z" itemprop="dateModified">Jun 16 2014</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-jdk"><span class="toc-number">1.</span> <span class="toc-text">1.jdk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-resin"><span class="toc-number">2.</span> <span class="toc-text">2.resin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-solr"><span class="toc-number">3.</span> <span class="toc-text">3.solr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#遇到的问题"><span class="toc-number">4.</span> <span class="toc-text">遇到的问题</span></a></li></ol>
+		</div>
+		
+		<h2 id="1-jdk">1.jdk</h2>
+<p>  wget jdk问题：<br>  在<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html" target="_blank" rel="external">http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html</a> 页面下找到jdk下载地址后直接执行  </p>
+<pre><code>wget  http:<span class="comment">//download.oracle.com/otn-pub/java/jdk/7u60-b19/jdk-7u60-linux-x64.tar.gz</span>
+</code></pre><p>  瞬间下载下来，但是下载过来的格式不对，无法正确下载。调出chrome的控制台，发现页面进行了302，跳转 ，因为wget不</p>
+<p>支持跳转，所以直接拷贝最终的jdk下载地址。</p>
+<pre><code>wget  <span class="symbol">http:</span>/<span class="regexp">/59.108.200.36/files</span><span class="regexp">/21340000021968D1/down</span>.shaolong.me/java/jdk-<span class="number">7</span>u6<span class="number">0</span>-linux-x64.tar.gz
+</code></pre><p>  配置JDK环境变量<br>  执行 </p>
+<pre><code> <span class="keyword">vim</span> ~/.bashrc 
+</code></pre><p>  （或者修改/etc/profile 具体区别参见：<a href="http://blog.sina.com.cn/s/blog_51e68f8d0100dc9w.html）" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_51e68f8d0100dc9w.html）</a></p>
+<p>在末尾添加如下：</p>
+<pre><code><span class="comment">#set java environment</span>
+<span class="keyword">export</span> JAVA_HOME = jdk的安装路径
+<span class="keyword">export</span> JRE_HOME=<span class="variable">${JAVA_HOME}</span>/jre
+<span class="keyword">export</span> CLASSPATH=.:<span class="variable">${JAVA_HOME}</span>/lib:<span class="variable">${JRE_HOME}</span>/lib
+<span class="keyword">export</span> PATH=<span class="variable">${JAVA_HOME}</span>/bin:<span class="variable">$PATH</span>
+</code></pre><p>保存后，执行 source 使其生效</p>
+<p>最后执行 java -version  验证是否配置成功。</p>
+<hr>
+<h2 id="2-resin">2.resin</h2>
+<p>下载resin  </p>
+<pre><code> wget http:<span class="comment">//www.caucho.com/download/resin-3.1.8.tar.gz</span>
+</code></pre><p> 解压：</p>
+<pre><code> <span class="title">tar</span> -zxvf  resin-<span class="number">3</span>.<span class="number">1</span>.<span class="number">8</span>.tar.gz
+</code></pre><p> 安装：</p>
+<pre><code> <span class="keyword">cd</span> resin-<span class="number">3.1</span>.<span class="number">3</span>
+ ./configure
+ <span class="keyword">make</span>
+ <span class="keyword">make</span> install
+</code></pre><hr>
+<h2 id="3-solr">3.solr</h2>
+<p>下载solr4.5.1</p>
+<pre><code>  wget <span class="symbol">http:</span>/<span class="regexp">/archive.apache.org/dist</span><span class="regexp">/lucene/solr</span><span class="regexp">/4.5.1/solr</span>-<span class="number">4.5</span>.<span class="number">1</span>.tgz
+   tar -zxvf  solr-<span class="number">4.5</span>.<span class="number">1</span>.tgz
+</code></pre><p>1.重命名solr-4.5.1文件中的dist文件夹下的solr的war包</p>
+<p>2.拷贝该solr.war 至resin中webapps目录下。<br>3.修改resin.conf<br>配置solr/home的JNDI,同时注意配置</p>
+<pre><code><span class="tag">&lt;<span class="title">tree-loader</span> <span class="attribute">path</span>=<span class="value">"/data/web/solr/dist"</span>/&gt;</span>
+</code></pre><p>它表明自动加载该指定目录下的jar包</p>
+<pre><code> <span class="tag">&lt;<span class="title">host</span> <span class="attribute">id</span>=<span class="value">""</span> <span class="attribute">root-directory</span>=<span class="value">"."</span>&gt;</span>
+
+     <span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">id</span>=<span class="value">"solr"</span>  <span class="attribute">document-directory</span>=<span class="value">"webapps/solr"</span>&gt;</span>
+
+             <span class="tag">&lt;<span class="title">stdout-log</span> <span class="attribute">path</span>=<span class="value">"/data/logs/solr/resin/stdout.log"</span> <span class="attribute">timestamp</span>=<span class="value">"[%H:%M:%S.%s]"</span> <span class="attribute">rollover-period</span>=<span class="value">"1D"</span>/&gt;</span>
+
+             <span class="tag">&lt;<span class="title">stderr-log</span> <span class="attribute">path</span>=<span class="value">"/data/logs/solr/resin/stderr.log"</span> <span class="attribute">timestamp</span>=<span class="value">"[%H:%M:%S.%s]"</span> <span class="attribute">rollover-period</span>=<span class="value">"1D"</span>/&gt;</span>
+
+             <span class="tag">&lt;<span class="title">character-encoding</span>&gt;</span>utf-8<span class="tag">&lt;/<span class="title">character-encoding</span>&gt;</span>
+
+             <span class="tag">&lt;<span class="title">env-entry</span>&gt;</span>
+
+                  <span class="tag">&lt;<span class="title">env-entry-name</span>&gt;</span>solr/home<span class="tag">&lt;/<span class="title">env-entry-name</span>&gt;</span>
+
+                  <span class="tag">&lt;<span class="title">env-entry-type</span>&gt;</span>java.lang.String<span class="tag">&lt;/<span class="title">env-entry-type</span>&gt;</span>
+
+                  <span class="tag">&lt;<span class="title">env-entry-value</span>&gt;</span>/data/web/solr/home/multicore<span class="tag">&lt;/<span class="title">env-entry-value</span>&gt;</span>
+
+             <span class="tag">&lt;/<span class="title">env-entry</span>&gt;</span>
+
+             <span class="tag">&lt;<span class="title">class-loader</span>&gt;</span>
+
+                   <span class="tag">&lt;<span class="title">tree-loader</span> <span class="attribute">path</span>=<span class="value">"/data/web/solr/dist"</span>/&gt;</span>
+
+             <span class="tag">&lt;/<span class="title">class-loader</span>&gt;</span>
+
+     <span class="tag">&lt;/<span class="title">web-app</span>&gt;</span>
+
+<span class="tag">&lt;/<span class="title">host</span>&gt;</span>
+</code></pre><hr>
+<h2 id="遇到的问题">遇到的问题</h2>
+<p>配置完成后，启动Resin，因为使用的resin3.1，solr4.5版本，遇到如下问题，可能其他版本会有不一样的问题：<br>1.500 Servlet Exception </p>
+<pre><code><span class="attribute">WEB-INF/web.xml:23</span>: <span class="string">&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee"&gt;</span>
+
+<span class="xml">is an unexpected top-level tag. 
+
+<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://caucho.com/ns/resin"</span>&gt;</span>,
+
+<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://java.sun.com/xml/ns/j2ee"</span>&gt;</span> or
+
+<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">""</span>&gt;</span> are expected.
+
+Syntax: (<span class="tag">&lt;<span class="title">web-app</span>&gt;</span> | <span class="tag">&lt;<span class="title">web-app</span>&gt;</span> | <span class="tag">&lt;<span class="title">web-app</span>&gt;</span>)</span>
+</code></pre><p>解决方法：在web工程目录中 如 /data/web/resin_solr/webapps/solr/WEB-INF/ 修改web.xml  ,直接将报错的三行删掉。</p>
+<p>2.log相关日志包无法找到</p>
+<p>解决方法：将 /data/web/solr-4.5.1/example/lib/ext中的jar包拷贝至CLASSPATH下</p>
+<p>3.</p>
+<p>15:21:45.055]429  [main] ERROR org.apache.solr.core.Config  – Exception during parsing file: null:javax.xml.transform.TransformerException: java.lang.UnsupportedOperationException</p>
+<p>[15:21:45.055]  at com.sun.org.apache.xalan.internal.xsltc.trax.TransformerImpl.transform(TransformerImpl.java:71</p>
+<p>解决方法：resin中XML解析的实现有问题，所以改用JVM自带的解析类  参考：<a href="http://wiki.apache.org/solr/SolrResin" target="_blank" rel="external">http://wiki.apache.org/solr/SolrResin</a> 中Resin’s XML Parsing Problems，将web.xml中以下注释去掉。</p>
+<pre><code>&lt;!<span class="comment">-- Uncomment if you are trying to use a Resin version before 3.0.19.</span>
+
+    Their XML implementation isn<span class="attribute">'t</span> entirely compatible <span class="keyword">with</span> Xerces.
+
+    Below are the implementations <span class="keyword">to</span> <span class="keyword">use</span> <span class="keyword">with</span> Sun<span class="attribute">'s</span> JVM.
+
+  &lt;system-<span class="keyword">property</span> javax.xml.xpath.XPathFactory=
+
+             <span class="string">"com.sun.org.apache.xpath.internal.jaxp.XPathFactoryImpl"</span>/&gt;
+
+  &lt;system-<span class="keyword">property</span> javax.xml.parsers.DocumentBuilderFactory=
+
+             <span class="string">"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"</span>/&gt;
+
+  &lt;system-<span class="keyword">property</span> javax.xml.parsers.SAXParserFactory=
+
+             <span class="string">"com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl"</span>/&gt;
+
+<span class="comment">--&gt;</span>
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/solr/">solr</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Solr/">Solr</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2014/06/16/solrset/" data-title="solr,resin 配置 | tong" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/09/26/solr-sphinx-对比/" title="solr sphinx 对比">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  solr sphinx 对比</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/06/10/hexo使用/"  title="Hexo  GitHub 搭建个人blog">
+ <strong>NEXT:</strong><br/> 
+ <span>Hexo  GitHub 搭建个人blog
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-jdk"><span class="toc-number">1.</span> <span class="toc-text">1.jdk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-resin"><span class="toc-number">2.</span> <span class="toc-text">2.resin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-solr"><span class="toc-number">3.</span> <span class="toc-text">3.solr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#遇到的问题"><span class="toc-number">4.</span> <span class="toc-text">遇到的问题</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/Solr/" title="Solr">Solr<sup>2</sup></a></li>
+		
+			<li><a href="/categories/maven/" title="maven">maven<sup>1</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>7</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+		
+			<li><a href="/tags/solr/" title="solr">solr<sup>2</sup></a></li>
+		
+			<li><a href="/tags/开发技术/" title="开发技术">开发技术<sup>7</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/1329252844" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/zaytay" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://yoursite.com" target="_blank" title="tong">tong</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>
