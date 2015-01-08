@@ -1,0 +1,411 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>spring mvc 请求映射 | tong</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="tong">
+    
+    <meta name="description" content="Spring MVC —请求映射与跳转
+spring mvc 请求的映射
+@RequestMapping  注解
+一般用在类上和方法上，如果用于类上，表示类中所有响应请求的方法以该地址作为父路径。
+
+@RequestBody将Http请求的正文插入方法中，使用适合的的HttpMessageConve">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/2cat.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/2cat.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="tong">tong</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/01/08/spring-mvc-requestbind/" title="spring mvc 请求映射" itemprop="url">spring mvc 请求映射</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="tong">tong</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-01-08T06:19:16.000Z" itemprop="datePublished">Jan 8 2015</time>
+    Updated:<time datetime="2015-01-08T06:24:08.000Z" itemprop="dateModified">Jan 8 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring_MVC_—请求映射与跳转"><span class="toc-number">1.</span> <span class="toc-text">Spring MVC —请求映射与跳转</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sping_MVC_中_的redirect控制"><span class="toc-number">2.</span> <span class="toc-text">Sping MVC 中 的redirect控制</span></a></li></ol>
+		</div>
+		
+		<h2 id="Spring_MVC_—请求映射与跳转">Spring MVC —请求映射与跳转</h2>
+<p>spring mvc 请求的映射</p>
+<p>@RequestMapping  注解</p>
+<p>一般用在类上和方法上，如果用于类上，表示类中所有响应请求的方法以该地址作为父路径。</p>
+<hr>
+<p>@RequestBody<br>将Http请求的正文插入方法中，使用适合的的HttpMessageConverter进行解析，然后把相应的数据绑定到要返回的对象上；再把HttpMessageConverter返回的对象数据绑定到 controller中方法的参数上。<br>具体的原理可以参见如下文章：<br><a href="http://www.cnblogs.com/fangjian0423/p/3716067.html" target="_blank" rel="external">http://www.cnblogs.com/fangjian0423/p/3716067.html</a></p>
+<p>具体使用例子：<br>首先在spring mvc 中添加配置文件</p>
+<pre><code><span class="tag">&lt;<span class="title">mvc:annotation-driven</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">mvc:message-converters</span> <span class="attribute">register-defaults</span>=<span class="value">"true"</span>&gt;</span>
+            <span class="comment">&lt;!-- 将StringHttpMessageConverter的默认编码设为UTF-8 --&gt;</span>
+            <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">class</span>=<span class="value">"org.springframework.http.converter.StringHttpMessageConverter"</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">constructor-arg</span> <span class="attribute">value</span>=<span class="value">"UTF-8"</span> /&gt;</span>
+            <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">class</span>=<span class="value">"org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"</span>&gt;</span>
+                <span class="comment">&lt;!--&lt;property name="supportedMediaTypes" value="application/json" /&gt;--&gt;</span>
+                <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"supportedMediaTypes"</span>&gt;</span>
+                    <span class="tag">&lt;<span class="title">list</span>&gt;</span>
+                        <span class="tag">&lt;<span class="title">value</span>&gt;</span>application/json;charset=UTF-8<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+                        <span class="tag">&lt;<span class="title">value</span>&gt;</span>text/json;charset=UTF-8<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+                        <span class="tag">&lt;<span class="title">value</span>&gt;</span>text/*;charset=UTF-8<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+                        <span class="tag">&lt;<span class="title">value</span>&gt;</span>text/plain;charset=UTF-8<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+                        <span class="tag">&lt;<span class="title">value</span>&gt;</span>*/*;charset=UTF-8<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+                    <span class="tag">&lt;/<span class="title">list</span>&gt;</span>
+                <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"objectMapper"</span>&gt;</span>
+                    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">class</span>=<span class="value">"com.fasterxml.jackson.databind.ObjectMapper"</span>&gt;</span>
+                        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"dateFormat"</span>&gt;</span>
+                            <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">class</span>=<span class="value">"java.text.SimpleDateFormat"</span>&gt;</span>
+                                <span class="tag">&lt;<span class="title">constructor-arg</span> <span class="attribute">type</span>=<span class="value">"java.lang.String"</span> <span class="attribute">value</span>=<span class="value">"yyyy-MM-dd HH:mm:ss"</span>/&gt;</span>
+                            <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+                        <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+                    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+                <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+            <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">mvc:message-converters</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">mvc:argument-resolvers</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">class</span>=<span class="value">"org.springframework.data.web.PageableHandlerMethodArgumentResolver"</span> &gt;</span>
+                <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"oneIndexedParameters"</span> <span class="attribute">value</span>=<span class="value">"true"</span>&gt;</span><span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"pageParameterName"</span> <span class="attribute">value</span>=<span class="value">"pageNo"</span>&gt;</span><span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+            <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">mvc:argument-resolvers</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">mvc:annotation-driven</span>&gt;</span>
+</code></pre><p>然后后台添加如下代码：</p>
+<pre><code>@RequestMapping(<span class="string">"/save"</span>)
+@ReponseBody
+<span class="keyword">public</span> List&lt;Map&lt;<span class="built_in">String</span>,<span class="built_in">Object</span>&gt;&gt;  deom(@RequestBody   Person[]  arrayPerson  ){
+        personService.save(arrayPerson);
+        Map&lt;<span class="built_in">String</span>, <span class="built_in">String</span>&gt; rtnMap = <span class="keyword">new</span> HashMap&lt;<span class="built_in">String</span>, <span class="built_in">String</span>&gt;();
+        rtnMap.put(<span class="string">"status"</span>,<span class="string">"ok"</span>);
+        rtnMap.put(<span class="string">"msg"</span>, <span class="string">"保存成功"</span>);
+        <span class="keyword">return</span> rtnMap;
+
+}
+</code></pre><p>前台添加如下代码：</p>
+<pre><code>$<span class="class">.ajax</span>(<span class="rules">{
+            <span class="rule"><span class="attribute">url</span>:<span class="value"><span class="string">"/save"</span>,
+            type:<span class="string">"POST"</span>,
+            contentType:<span class="string">"application/json"</span>,
+            dataType:<span class="string">"json"</span>,
+            data:JSON.<span class="function">stringify</span>(postList),
+            success:<span class="function">function</span>(res) {
+                location.href = <span class="string">'/list'</span></span></span>;
+            <span class="rule">}</span></span>
+        })
+</code></pre><p>在接收请求时，demo方法中，@RequestBody  注解会根据 请求的类型contentType:”application/json”，采用合适的MappingJackson2HttpMessageConverter转化器，将请求文本转换为相应的java对象。<br>在响应请求时，@ReponseBody 将Map对象又转换为json串。</p>
+<hr>
+<p>@RequestParam<br>@RequestBody一般用于post提交的参数绑定，而@RequestParam一般用于get提交的简单类型的参数绑定。<br>例如：针对URL：  requestUrl?username=wang</p>
+<pre><code><span class="keyword">public</span> <span class="built_in">String</span> requestParam1(@RequsetParam(<span class="string">"username"</span>)  <span class="built_in">String</span> name)
+</code></pre><p>@RequestParam 明确将username参数绑定 到String类型的name对象上。<br>@RequestParam 属性：<br>value：参数名字，即入参的请求参数名字，如username表示请求的参数区中的名字为username的参数的值将传入；<br>required：是否必须，默认是true，表示请求中一定要有相应的参数，否则将报404错误码；<br>default：默认值 </p>
+<pre><code><span class="keyword">public</span> String <span class="title">requestParam2</span>( @<span class="title">RequsetParam</span>(<span class="keyword">value</span>=<span class="string">"username"</span>,required=<span class="keyword">false</span>)     String name)
+</code></pre><p>  在上面代码表示username不是必需的参数，当请求中没有username参数时，name 为null。<br>  这里需要注意：<br>  原子类型：必须有值，否则抛出异常，如果允许空值请使用包装类代替。<br>  Boolean包装类型类型：默认Boolean.FALSE，其他引用类型默认为null。</p>
+<p>@RequestParam 也可以用来绑定请求中含有多值的情况，如：<br>url:  requestUrl?role=admin&amp;role=manager  </p>
+<pre><code><span class="keyword">public</span> String <span class="title">requestParam3</span>(@<span class="title">RequestParam</span>(<span class="keyword">value</span>=<span class="string">"role"</span>) List&lt;String&gt;  roleList)
+</code></pre><p>实际roleList入参的参数数据为：admin,manager 以逗号进行分割。可以直接使用数组或链表进行接收。</p>
+<hr>
+<h2 id="Sping_MVC_中_的redirect控制">Sping MVC 中 的redirect控制</h2>
+<p>不带参数的redirect<br>直接：return  “redirect:/user/list”;</p>
+<p>带参数：<br>1.手动在url中拼接参数：<br>return “redirect:/user/list?param=”+value;</p>
+<p>2.使用RedirectAttributes</p>
+<pre><code>@<span class="type">RequestMapping</span>(value=<span class="string">"/redirect"</span>,<span class="keyword">method</span>=<span class="type">RequestMethod</span>.<span class="type">GET</span>)  
+public <span class="type">String</span> testRedirect(<span class="type">RedirectAttributes</span> attr){  
+     attr.addAttribute(<span class="string">"a"</span>, <span class="string">"a"</span>);  
+     attr.addFlashAttribute(<span class="string">"b"</span>, <span class="string">"b"</span>);  
+     <span class="keyword">return</span> <span class="string">"redirect:/index.action"</span>;  
+}  
+</code></pre><p>注意：<br>1.使用RedirectAttributes的addAttribute方法传递参数会跟随在URL后面 ，如上代码即为http:/index.action?a=a<br>2.使用addFlashAttribute不会跟随在URL后面，会把该参数值暂时保存于session，待重定向url获取该参数后从session中移除，这里的redirect必须是方法映射路径，jsp无效。你会发现redirect后的jsp页面中b只会出现一次，刷新后b再也不会出现了，这验证了上面说的，b被访问后就会从session中移除。对于重复提交可以使用此来完成.</p>
+<p>参考文章：<br><a href="http://my.oschina.net/lichhao/blog/172562" target="_blank" rel="external">http://my.oschina.net/lichhao/blog/172562</a><br><a href="http://www.cnblogs.com/fangjian0423/p/3716067.html" target="_blank" rel="external">http://www.cnblogs.com/fangjian0423/p/3716067.html</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/spring-mvc/">spring mvc</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/spring/">spring</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2015/01/08/spring-mvc-requestbind/" data-title="spring mvc 请求映射 | tong" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/01/04/mvn-tomcat-plugin-使用/"  title="mvn tomcat-plugin 使用">
+ <strong>NEXT:</strong><br/> 
+ <span>mvn tomcat-plugin 使用
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring_MVC_—请求映射与跳转"><span class="toc-number">1.</span> <span class="toc-text">Spring MVC —请求映射与跳转</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sping_MVC_中_的redirect控制"><span class="toc-number">2.</span> <span class="toc-text">Sping MVC 中 的redirect控制</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/Solr/" title="Solr">Solr<sup>2</sup></a></li>
+		
+			<li><a href="/categories/maven/" title="maven">maven<sup>1</sup></a></li>
+		
+			<li><a href="/categories/spring/" title="spring">spring<sup>1</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+		
+			<li><a href="/tags/solr/" title="solr">solr<sup>2</sup></a></li>
+		
+			<li><a href="/tags/spring-mvc/" title="spring mvc">spring mvc<sup>1</sup></a></li>
+		
+			<li><a href="/tags/开发技术/" title="开发技术">开发技术<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/1329252844" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/zaytay" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://yoursite.com" target="_blank" title="tong">tong</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>
