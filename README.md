@@ -1,3 +1,3 @@
 # zaytay.github.io
-blog： zaytay.github.io
+blog： http://zaytay.github.io
 
